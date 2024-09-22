@@ -63,6 +63,32 @@ def snap_cam(cam_id):
     return img
 
 
+def convert_utc_local(time_utc_str, local_tz):
+    """Converts given UTC time to Local datetime.
+    
+    Parameters
+    ----------
+    time_utc_str: str
+        UTC time in string
+    local_tz: 
+        Local timezone
+
+    Returns
+    -------
+    datetime_local: datetime.datetime
+        Local datetime
+    """
+    curr_datetime_local = datetime.now(local_tz)
+    curr_date_str_local = curr_datetime_local.strftime("%Y-%m-%d")
+    datetime_utc = datetime.strptime(
+        f"{curr_date_str_local} {time_utc_str}",
+        "%Y-%m-%d %I:%M:%S %p"
+    )
+    datetime_local = datetime_utc.replace(tzinfo=pytz.utc).astimezone(local_tz)
+
+    return datetime_local
+    
+
 def check_if_daylight(lat, long):
     """Checks if the given coordinate location is at daylight time.
     Source: Sunrise and sunset times API: https://sunrise-sunset.org/api
@@ -88,21 +114,12 @@ def check_if_daylight(lat, long):
     sunset_time_utc = results_dict["results"]["sunset"]
 
     # Convert to Melbourne timezone
-    tz = pytz.timezone('Australia/Melbourne')
-    curr_datetime_melb = datetime.now(tz)
-    curr_date_str_melb = curr_datetime_melb.strftime("%Y-%m-%d")
-    sunrise_datetime_utc = datetime.strptime(
-        f"{curr_date_str_melb} {sunrise_time_utc}",
-        "%Y-%m-%d %I:%M:%S %p"
-    )
-    sunrise_datetime_melb = sunrise_datetime_utc.replace(tzinfo=pytz.utc).astimezone(tz)
-    sunset_datetime_utc = datetime.strptime(
-        f"{curr_date_str_melb} {sunset_time_utc}",
-        "%Y-%m-%d %I:%M:%S %p"
-    )
-    sunset_datetime_melb = sunset_datetime_utc.replace(tzinfo=pytz.utc).astimezone(tz)
+    melb_tz = pytz.timezone('Australia/Melbourne')
+    sunrise_datetime_melb = convert_utc_local(sunrise_time_utc, melb_tz)
+    sunset_datetime_melb = convert_utc_local(sunset_time_utc, melb_tz)
 
     # Check if current Melbourne time is at daylight
+    curr_datetime_melb = datetime.now(melb_tz)
     if (curr_datetime_melb >= sunrise_datetime_melb) \
         & (curr_datetime_melb < sunset_datetime_melb):
         return True
