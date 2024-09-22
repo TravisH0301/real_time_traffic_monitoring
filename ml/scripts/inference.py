@@ -22,7 +22,7 @@ colours = [
 ]
 melb_lat, melb_long = -37.840935, 144.946457
 model_conf_dict = {
-    1: (0.1, 0.1),  # Confidence at day & night
+    1: (0.1, 0.1),  # Confidence threshold at day & night
     2: (0.1, 0.25),
     3: (0.1, 0.15),
     4: (0.1, 0.1),
