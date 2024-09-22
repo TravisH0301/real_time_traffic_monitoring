@@ -1,5 +1,5 @@
-# Pre-trained YOLO version 8 nano model weights path
-weights_path: "./ml/model/yolov8n.pt"
+# Pre-trained YOLO version 8 nano model path
+model_path: "./ml/model/yolov8n.pt"
 
 # Object detection classes
 classes:

@@ -12,7 +12,7 @@ from ultralytics.utils import yaml_load
 
 
 config_path = "./ml/config/yolo.yaml"
-weights_path = yaml_load(config_path)["weights_path"]
+model_path = yaml_load(config_path)["model_path"]
 class_dict = yaml_load(config_path)["classes"]
 colours = [
     [255, 0, 0],  # Blue in BGR
@@ -110,20 +110,20 @@ def check_if_daylight(lat, long):
         return False
 
 
-def load_model(weights_path):
-    """Loads pre-trained YOLO model with given weights parameters.
+def load_model(model_path):
+    """Loads pre-trained YOLO model with given model path.
 
     Parameters
     ----------
-    weights_path: str
-        Path to pre-trained weights file
+    model_path: str
+        Path to pre-trained model file
 
     Returns
     -------
     model: class
         YOLO model class object
     """
-    model = YOLO(weights_path)    
+    model = YOLO(model_path)
 
     return model
 
@@ -159,7 +159,7 @@ def draw_box(img, class_id, x, y, w, h):
 
 def main():
     # Load pre-trained YOLO model
-    model = load_model(weights_path)
+    model = load_model(model_path)
 
     # Test to adjust model confidence for each traffic camera
     for i in range(14):
