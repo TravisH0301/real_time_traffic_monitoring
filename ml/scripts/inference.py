@@ -41,6 +41,7 @@ model_conf_dict = {
 
 def snap_cam(cam_id):
     """Takes a snapshot of a real-time traffic video at the given camera ID.
+    Source: Linkt: https://www.linkt.com.au/using-toll-roads/traffic-and-roadworks/melbourne#live
 
     Parameters
     ----------
@@ -64,6 +65,7 @@ def snap_cam(cam_id):
 
 def check_if_daylight(lat, long):
     """Checks if the given coordinate location is at daylight time.
+    Source: Sunrise and sunset times API: https://sunrise-sunset.org/api
 
     Parameters
     ----------
@@ -180,7 +182,7 @@ def main():
             conf=model_conf
         )
 
-        # Label and count detected vehicles
+        # Iterate through output to label and count detected vehicles
         detected_vehicle_dict = dict(zip(class_dict.values(), [0]*len(class_dict)))
         for r in results:
             boxes = r.boxes
@@ -195,6 +197,7 @@ def main():
                 # Count detected vehicle type
                 detected_vehicle_dict[class_name] += 1
 
+        # Display labelled image with detected vehicles
         print("#############################")
         print("CAM", i+1, "Confidence:", model_conf)
         print(detected_vehicle_dict)
