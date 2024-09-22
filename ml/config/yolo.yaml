@@ -1,0 +1,9 @@
+# Pre-trained YOLO version 8 nano model weights path
+weights_path: "./ml/models/yolov8n.pt"
+
+# Object detection classes
+classes:
+  2: car
+  3: motorcycle
+  5: bus
+  7: truck
